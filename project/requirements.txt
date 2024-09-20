@@ -1,0 +1,7 @@
+alembic==1.13.2
+asyncpg==0.29.0
+fastapi==0.115.0
+gunicorn==23.0.0
+structlog==24.4.0
+sqlmodel==0.0.22
+uvicorn==0.30.6
