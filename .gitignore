@@ -1,3 +1,5 @@
 .env
 __pycache__
 *venv/
+fastapi-ssh-key.pem
+.pytest_cache
