@@ -1,5 +1,5 @@
-from typing import Any
-from fastapi import FastAPI, Depends
+from typing import Any, List
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from structlog import get_logger
 from sqlalchemy.future import select
@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
 from app.models import Policy
-from common.errors.policy_not_found_error import PolicyNotFoundError
 
 app = FastAPI()
 logger = get_logger(__name__)
@@ -34,9 +33,28 @@ async def get_policy_by_id(
     logger.debug("get_policy_by_id")
 
     id = policy_id
-    try:
-        result = await session.execute(select(Policy, id))
-    except PolicyNotFoundError:
+
+    result = await session.get(Policy, id)
+    if result is None:
         return JSONResponse(status_code=404, content="Policy not found")
 
     return result
+
+@app.get("/policies", response_model=list[Policy])
+async def get_policies(
+    session: AsyncSession = Depends(get_session)
+) -> List[Policy]:
+    """get a list of movies"""
+    logger.debug("get_movies")
+
+    result = await session.execute(select(Policy))
+    policies = result.scalars().all()
+    return [Policy(
+        title=policy.title,
+        date=policy.date,
+        type=policy.type,
+        name=policy.name,
+        wording=policy.wording,
+        price=policy.price,
+        id=policy.id
+    ) for policy in policies]

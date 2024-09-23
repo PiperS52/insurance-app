@@ -10,9 +10,13 @@ class PolicyBase(SQLModel):
     type: str
     name: str
     wording: str
+    price: float
 
 
 class Policy(PolicyBase, table=True):
     """policy db model"""
 
     id: int = Field(default=None, primary_key=True)
+
+    class Config:
+        from_attributes = True

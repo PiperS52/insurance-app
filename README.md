@@ -8,6 +8,8 @@ Locally the project can be run using docker.
 1. `docker-compose up --build -d` to launch containers in the root
 2. `docker-compose exec api alembic upgrade head` to run the migrations
 
+The database is seeded and so the GET /policies/{policy_id} endpoint can be hit with postman locally at e.g. `http://localhost:8000/policies/1`
+
 ### Documentation of the api
 visit `http://localhost:8000/docs` to test the GET /health and GET /policies/{policy_id} locally in the browser
 
@@ -28,4 +30,4 @@ The developer has an AWS account, as well as the AWS CLI and Docker (Desktop) in
 Initial deployments using t2.micro EC2s within the ECS cluster failed, although scaling to use 3 t2.large EC2 resulted in successful deployments.
 
 ### Further work
-Given more time, the integration and unit testing could be completed.
+Given more time, beyond the endpoint testing with postman, the integration and unit testing could be completed.
